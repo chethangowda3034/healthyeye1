@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthyEye — What is this medicine?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F6F5F0;
+    --surface: #FFFFFF;
+    --ink: #1D2B26;
+    --ink-soft: #52625B;
+    --sage: #3F6659;
+    --sage-deep: #2A4A40;
+    --clay: #C97A5A;
+    --line: #DCE0D8;
+    --amber: #B8863C;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 20px 80px;
+  }
+
+  header {
+    width: 100%;
+    max-width: 640px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .eye-mark {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 18px;
+    display: block;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 34px;
+    letter-spacing: -0.01em;
+    color: var(--sage-deep);
+  }
+
+  header p {
+    color: var(--ink-soft);
+    font-size: 15px;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  main {
+    width: 100%;
+    max-width: 640px;
+  }
+
+  .upload-zone {
+    background: var(--surface);
+    border: 1.5px dashed var(--line);
+    border-radius: 18px;
+    padding: 48px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--sage);
+    background: #FAFAF7;
+  }
+
+  .upload-zone svg { width: 40px; height: 40px; color: var(--sage); margin-bottom: 14px; }
+
+  .upload-zone .primary-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .upload-zone .secondary-text {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  #fileInput { display: none; }
+
+  .preview-wrap {
+    display: none;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .preview-wrap img {
+    max-width: 220px;
+    max-height: 220px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+
+  .status {
+    display: none;
+    margin-top: 24px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+  }
+
+  .status .dot-flash {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--sage);
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: pulse 1.1s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+
+  .result-card {
+    display: none;
+    margin-top: 28px;
+    background: var(--surface);
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .result-card .card-head {
+    background: var(--sage-deep);
+    color: #fff;
+    padding: 22px 26px;
+  }
+
+  .result-card .card-head .tag {
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-bottom: 6px;
+  }
+
+  .result-card .card-head h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .result-card .card-head .brands {
+    font-size: 13.5px;
+    opacity: 0.8;
+    margin-top: 4px;
+  }
+
+  .unverified-flag {
+    background: #FCF3E7;
+    color: var(--amber);
+    font-size: 13px;
+    padding: 10px 26px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .card-body { padding: 8px 26px 22px; }
+
+  .field {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .field:last-child { border-bottom: none; }
+
+  .field .label {
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .field .value {
+    font-size: 15.5px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .field.avoid .label { color: var(--clay); }
+  .field.remedy .label { color: var(--amber); }
+
+  .disclaimer {
+    max-width: 640px;
+    margin-top: 28px;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    text-align: center;
+    padding: 0 12px;
+  }
+
+  .reset-link {
+    display: none;
+    margin-top: 18px;
+    text-align: center;
+  }
+
+  .reset-link button {
+    background: none;
+    border: none;
+    color: var(--sage);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="eye-mark" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="21" cy="21" rx="19" ry="11" stroke="#3F6659" stroke-width="2"/>
+    <circle cx="21" cy="21" r="6.5" fill="#3F6659"/>
+    <circle cx="23" cy="19" r="1.6" fill="#F6F5F0"/>
+  </svg>
+  <h1>HealthyEye</h1>
+  <p>Photograph a medicine strip or syrup label.<br>We'll tell you what it's for, in plain language.</p>
+</header>
+
+<main>
+  <div class="upload-zone" id="uploadZone">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.6">
+      <path d="M12 16V4M12 4L7 9M12 4l5 5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div class="primary-text">Tap to upload a photo</div>
+    <div class="secondary-text">Best result: back of the strip, where the composition is printed</div>
+    <input type="file" id="fileInput" accept="image/*" capture="environment">
+  </div>
+
+  <div class="preview-wrap" id="previewWrap">
+    <img id="previewImg" alt="Uploaded medicine photo">
+  </div>
+
+  <div class="status" id="statusBox">
+    <span class="dot-flash"></span><span id="statusText">Reading the label…</span>
+  </div>
+
+  <div class="result-card" id="resultCard">
+    <div class="card-head">
+      <div class="tag" id="cardTag">Identified</div>
+      <h2 id="cardTitle">—</h2>
+      <div class="brands" id="cardBrands"></div>
+    </div>
+    <div class="unverified-flag" id="unverifiedFlag" style="display:none;"></div>
+    <div class="card-body">
+      <div class="field">
+        <div class="label">Used for</div>
+        <div class="value" id="usedFor">—</div>
+      </div>
+      <div class="field">
+        <div class="label">When to take</div>
+        <div class="value" id="timing">—</div>
+      </div>
+      <div class="field avoid">
+        <div class="label">Avoid</div>
+        <div class="value" id="avoid">—</div>
+      </div>
+      <div class="field">
+        <div class="label">Be aware / Precautions</div>
+        <div class="value" id="precautions">—</div>
+      </div>
+      <div class="field remedy" id="remedyField">
+        <div class="label">Home remedy alternative</div>
+        <div class="value" id="remedy">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="reset-link" id="resetLink">
+    <button onclick="resetApp()">Scan another medicine</button>
+  </div>
+</main>
+
+<p class="disclaimer">
+  HealthyEye gives general informational guidance only — it is not a medical diagnosis
+  or prescription. Always confirm with a pharmacist or doctor, especially for children,
+  pregnancy, chronic conditions, or before starting any new medicine.
+</p>
+
+<script>
+  const API_BASE = "http://localhost:8000";
+
+  const uploadZone = document.getElementById('uploadZone');
+  const fileInput = document.getElementById('fileInput');
+  const previewWrap = document.getElementById('previewWrap');
+  const previewImg = document.getElementById('previewImg');
+  const statusBox = document.getElementById('statusBox');
+  const statusText = document.getElementById('statusText');
+  const resultCard = document.getElementById('resultCard');
+  const resetLink = document.getElementById('resetLink');
+
+  uploadZone.addEventListener('click', () => fileInput.click());
+
+  ['dragover', 'dragenter'].forEach(evt =>
+    uploadZone.addEventListener(evt, e => { e.preventDefault(); uploadZone.classList.add('dragover'); })
+  );
+  ['dragleave', 'drop'].forEach(evt =>
+    uploadZone.addEventListener(evt, e => { e.preventDefault(); uploadZone.classList.remove('dragover'); })
+  );
+  uploadZone.addEventListener('drop', e => {
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) handleFile(fileInput.files[0]);
+  });
+
+  function handleFile(file) {
+    previewImg.src = URL.createObjectURL(file);
+    previewWrap.style.display = 'block';
+    resultCard.style.display = 'none';
+    resetLink.style.display = 'none';
+    statusBox.style.display = 'block';
+    statusText.textContent = 'Reading the label…';
+    uploadZone.style.display = 'none';
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Fixed endpoint URL to /analyze-medicine
+    fetch(`${API_BASE}/analyze-medicine`, { method: 'POST', body: formData })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`Server returned HTTP ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(data => showResult(data))
+      .catch(err => {
+        statusText.textContent = 'Something went wrong — check backend console for errors.';
+        console.error(err);
+      });
+  }
+
+  function showResult(data) {
+    statusBox.style.display = 'none';
+    resetLink.style.display = 'block';
+
+    if (data.status === 'unreadable' || data.error) {
+      resultCard.style.display = 'block';
+      document.getElementById('cardTag').textContent = 'Couldn\'t read label';
+      document.getElementById('cardTitle').textContent = 'Try a clearer photo';
+      document.getElementById('cardBrands').textContent = '';
+      document.getElementById('unverifiedFlag').style.display = 'block';
+      document.getElementById('unverifiedFlag').textContent = data.message || data.error || 'Unable to identify image.';
+      document.getElementById('usedFor').textContent = '—';
+      document.getElementById('timing').textContent = '—';
+      document.getElementById('avoid').textContent = '—';
+      document.getElementById('precautions').textContent = '—';
+      document.getElementById('remedyField').style.display = 'none';
+      return;
+    }
+
+    // Header info
+    document.getElementById('cardTag').textContent = 'Identified';
+    document.getElementById('cardTitle').textContent = data.medicine_name || data.salt_name || 'Medicine Identified';
+    document.getElementById('cardBrands').textContent = data.common_brands ? `Common brands: ${data.common_brands}` : '';
+
+    document.getElementById('unverifiedFlag').style.display = 'none';
+
+    // Body content mapping direct backend fields
+    document.getElementById('usedFor').textContent = data.purpose || data.used_for || '—';
+    document.getElementById('timing').textContent = data.timing || '—';
+    document.getElementById('avoid').textContent = data.avoid || '—';
+    document.getElementById('precautions').textContent = data.precautions || '—';
+
+    // Home remedies handling
+    const remedyField = document.getElementById('remedyField');
+    if (data.home_remedy) {
+      remedyField.style.display = 'block';
+      document.getElementById('remedy').textContent = data.home_remedy;
+    } else {
+      remedyField.style.display = 'none';
+    }
+
+    resultCard.style.display = 'block';
+  }
+
+  function resetApp() {
+    fileInput.value = '';
+    previewWrap.style.display = 'none';
+    resultCard.style.display = 'none';
+    resetLink.style.display = 'none';
+    uploadZone.style.display = 'block';
+  }
+</script>
+
+</body>
+</html>
