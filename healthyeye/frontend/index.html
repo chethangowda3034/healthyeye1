@@ -3,49 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HealthyEye</title>
-    <!-- Marked.js library to render Markdown into clean HTML -->
+    <title>HealthyEye - Advanced Medical Vision</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #f7f6f0; color: #2d3748; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
-        header { text-align: center; margin-bottom: 20px; }
-        h1 { color: #1b4332; margin-bottom: 8px; font-size: 2.2rem; }
-        p.subtitle { color: #52796f; margin: 0; font-size: 1rem; max-width: 400px; }
-        .card { background: #ffffff; border-radius: 12px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); width: 100%; max-width: 520px; text-align: center; }
-        .upload-zone { border: 2px dashed #b7e4c7; border-radius: 8px; padding: 30px 15px; cursor: pointer; transition: background 0.2s ease; }
-        .upload-zone:hover { background-color: #f0fdf4; }
+        body { background-color: #f4f6f8; color: #1a202c; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
+        header { text-align: center; margin-bottom: 24px; }
+        h1 { color: #0f5132; margin-bottom: 6px; font-size: 2.2rem; letter-spacing: -0.5px; }
+        p.subtitle { color: #4a5568; margin: 0; font-size: 1rem; max-width: 460px; }
+        .card { background: #ffffff; border-radius: 14px; padding: 28px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); width: 100%; max-width: 640px; text-align: center; }
+        .upload-zone { border: 2px dashed #98d8aa; border-radius: 10px; padding: 32px 16px; cursor: pointer; background: #fbfdfb; transition: all 0.2s ease; }
+        .upload-zone:hover { background-color: #f0fdf4; border-color: #2d6a4f; }
         input[type="file"] { display: none; }
-        .preview-img { max-width: 100%; max-height: 220px; border-radius: 8px; margin-top: 15px; display: none; margin-left: auto; margin-right: auto; }
-        .status { margin-top: 15px; font-weight: 500; font-size: 0.95rem; }
-        .result { text-align: left; background: #f8fafc; border-left: 4px solid #2d6a4f; padding: 15px 20px; border-radius: 4px; margin-top: 20px; font-size: 0.95rem; line-height: 1.6; display: none; }
-        .result ul { padding-left: 20px; margin: 10px 0; }
-        .result li { margin-bottom: 6px; }
-        .result p { margin: 8px 0; }
-        p.disclaimer { font-size: 0.75rem; color: #718096; max-width: 440px; text-align: center; margin-top: 25px; line-height: 1.4; }
-        a.reset { display: inline-block; margin-top: 15px; color: #2d6a4f; text-decoration: underline; cursor: pointer; font-size: 0.85rem; display: none; }
+        .preview-img { max-width: 100%; max-height: 240px; border-radius: 8px; margin-top: 15px; display: none; margin-left: auto; margin-right: auto; border: 1px solid #e2e8f0; }
+        .status { margin-top: 18px; font-weight: 600; font-size: 1rem; }
+        
+        /* Clinical Output Dashboard Styling */
+        .result { text-align: left; background: #ffffff; border: 1px solid #e2e8f0; border-top: 4px solid #0f5132; padding: 20px 24px; border-radius: 8px; margin-top: 22px; font-size: 0.95rem; line-height: 1.65; display: none; }
+        .result h3 { color: #0f5132; margin-top: 20px; margin-bottom: 10px; font-size: 1.1rem; border-bottom: 1px solid #edf2f7; padding-bottom: 6px; }
+        .result h3:first-child { margin-top: 0; }
+        .result ul { padding-left: 20px; margin: 8px 0; }
+        .result li { margin-bottom: 6px; color: #2d3748; }
+        .result p { margin: 8px 0; color: #2d3748; }
+        .result strong { color: #1a202c; }
+        
+        p.disclaimer { font-size: 0.78rem; color: #718096; max-width: 520px; text-align: center; margin-top: 25px; line-height: 1.5; }
+        a.reset { display: inline-block; margin-top: 18px; color: #0f5132; font-weight: 600; text-decoration: underline; cursor: pointer; font-size: 0.9rem; display: none; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>HealthyEye</h1>
-        <p class="subtitle">Photograph a medicine strip or syrup label. We'll tell you what it's for, in plain language.</p>
+        <p class="subtitle">Upload a photo of any medicine. Get comprehensive identification, global safety ratings, and regulatory insights.</p>
     </header>
 
     <div class="card">
         <div class="upload-zone" id="uploadZone">
-            <p id="uploadPrompt">Tap to upload a photo<br><small style="color: #718096;">Best result: back of the strip, where composition is printed</small></p>
+            <p id="uploadPrompt">Tap to upload a medicine photo<br><small style="color: #718096;">Clear images of active ingredients yield highest accuracy</small></p>
             <input type="file" id="fileInput" accept="image/*">
             <img id="previewImg" class="preview-img" alt="Uploaded Medicine Preview">
         </div>
 
         <div id="statusBox" class="status"></div>
         <div id="resultCard" class="result"></div>
-        <a id="resetLink" class="reset" onclick="resetUI()">Upload another photo</a>
+        <a id="resetLink" class="reset" onclick="resetUI()">Analyze another medicine</a>
     </div>
 
-    <p class="disclaimer">HealthyEye gives general informational guidance only — it is not a medical diagnosis or prescription. Always confirm with a pharmacist or doctor, especially for children, pregnancy, chronic conditions, or before starting any new medicine.</p>
+    <p class="disclaimer">HealthyEye provides informational guidance based on AI vision analysis — it is not a medical diagnosis or prescription. Always verify details with a certified physician or pharmacist before taking any medication.</p>
 
     <script>
         const API_BASE = "https://healthyeye-1.onrender.com";
@@ -64,13 +69,12 @@
             const file = e.target.files[0];
             if (!file) return;
 
-            // Show preview
             previewImg.src = URL.createObjectURL(file);
             previewImg.style.display = 'block';
             uploadPrompt.style.display = 'none';
 
-            statusBox.style.color = '#2d6a4f';
-            statusBox.textContent = 'Analyzing image...';
+            statusBox.style.color = '#0f5132';
+            statusBox.textContent = 'Performing clinical image analysis...';
             resultCard.style.display = 'none';
 
             const formData = new FormData();
@@ -86,7 +90,6 @@
 
                 if (response.ok && data.success) {
                     statusBox.textContent = '';
-                    // Parse Markdown into formatted HTML
                     resultCard.innerHTML = marked.parse(data.analysis);
                     resultCard.style.display = 'block';
                 } else {
@@ -95,7 +98,7 @@
                 }
             } catch (err) {
                 statusBox.style.color = '#e63946';
-                statusBox.textContent = 'Network error: Failed to reach backend server.';
+                statusBox.textContent = 'Network error: Failed to reach server.';
                 console.error(err);
             } finally {
                 resetLink.style.display = 'inline-block';
