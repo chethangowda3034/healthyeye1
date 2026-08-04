@@ -11,6 +11,8 @@
     <!-- Cropper.js Stylesheet & Script -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <!-- html2pdf.js for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
@@ -156,6 +158,13 @@
         <div id="statusBox" class="status"></div>
         <div id="resultCard" class="result"></div>
         
+        <!-- NEW: Actionable Utilities -->
+        <div class="btn-group" id="actionUtilities" style="display: none; margin-top: 16px;">
+            <button class="btn btn-secondary" onclick="exportPDF()" title="Download as PDF">📄 PDF</button>
+            <button class="btn btn-secondary" onclick="shareWhatsApp()" title="Share to WhatsApp">💬 WhatsApp</button>
+            <button class="btn btn-secondary" onclick="addCalendar()" title="Set Daily Reminder">📅 Reminder</button>
+        </div>
+        
         <button id="backBtn" class="btn btn-back" onclick="resetUI()">← Back to Scan</button>
     </div>
 
@@ -226,6 +235,7 @@
         const previewImg = document.getElementById('previewImg');
         const statusBox = document.getElementById('statusBox');
         const resultCard = document.getElementById('resultCard');
+        const actionUtilities = document.getElementById('actionUtilities');
         const backBtn = document.getElementById('backBtn');
 
         let cropper = null;
@@ -275,6 +285,7 @@
             statusBox.style.color = '#74c69d';
             statusBox.textContent = 'Analyzing cropped image...';
             resultCard.style.display = 'none';
+            actionUtilities.style.display = 'none';
             backBtn.style.display = 'none';
 
             const formData = new FormData();
@@ -289,6 +300,7 @@
                     const parsedHtml = marked.parse(data.analysis);
                     resultCard.innerHTML = parsedHtml;
                     resultCard.style.display = 'block';
+                    actionUtilities.style.display = 'flex'; // Show Utilities
                     
                     saveToHistory(currentThumbDataUrl, parsedHtml);
                 } else {
@@ -358,6 +370,7 @@
             previewBox.style.display = 'block';
             resultCard.innerHTML = item.analysis;
             resultCard.style.display = 'block';
+            actionUtilities.style.display = 'flex'; // Show Utilities
             backBtn.style.display = 'block';
         }
 
@@ -381,12 +394,55 @@
             statusBox.textContent = '';
             resultCard.innerHTML = '';
             resultCard.style.display = 'none';
+            actionUtilities.style.display = 'none'; // Hide Utilities
             backBtn.style.display = 'none';
             
             if (cropper) {
                 cropper.destroy();
                 cropper = null;
             }
+        }
+
+        // --- ACTIONABLE UTILITIES ---
+
+        function exportPDF() {
+            const element = document.getElementById('resultCard');
+            const opt = {
+                margin:       10,
+                filename:     'HealthyEye_Analysis.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            // Temporarily adjust styling for the PDF output
+            element.style.background = '#ffffff';
+            element.style.color = '#000000';
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Revert to dark theme after saving
+                element.style.background = 'rgba(10, 20, 17, 0.85)';
+                element.style.color = '#e2e8f0';
+            });
+        }
+
+        function shareWhatsApp() {
+            // Grab the raw text from the result card (stripping HTML tags)
+            const rawText = document.getElementById('resultCard').innerText;
+            const intro = "Here is the medicine analysis from HealthyEye:\n\n";
+            const encodedText = encodeURIComponent(intro + rawText);
+            
+            window.open(`https://wa.me/?text=${encodedText}`, '_blank');
+        }
+
+        function addCalendar() {
+            // Creates a Google Calendar URL for a daily recurring reminder
+            const title = encodeURIComponent("Medication Reminder");
+            const details = encodeURIComponent("Time to take your medication. Check your HealthyEye app for specific dosage and interaction instructions.");
+            
+            // RRULE:FREQ=DAILY sets it to repeat every day
+            const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&recur=RRULE:FREQ=DAILY`;
+            
+            window.open(url, '_blank');
         }
     </script>
 </body>
