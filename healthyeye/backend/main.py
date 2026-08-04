@@ -21,7 +21,7 @@ if api_key:
 else:
     client = None
 
-# Enhanced System Prompt for Deep Analysis and Global Ratings
+# Comprehensive Clinical System Prompt
 SYSTEM_PROMPT = """
 You are HealthyEye, an advanced clinical AI pharmacy assistant.
 Carefully inspect the uploaded medicine image (label, strip, box, or bottle).
@@ -77,9 +77,9 @@ async def analyze_medicine(file: UploadFile = File(...)):
             mime_type=file.content_type or "image/jpeg"
         )
 
-        # Using gemini-2.5-pro for higher accuracy and deeper domain knowledge
+        # Switched to gemini-2.5-flash for generous free tier quotas
         response = client.models.generate_content(
-            model="gemini-2.5-pro",
+            model="gemini-2.5-flash",
             contents=[SYSTEM_PROMPT, image_part]
         )
 
