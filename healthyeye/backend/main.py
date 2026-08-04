@@ -1,14 +1,12 @@
 import os
-import io
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from PIL import Image
 from google import genai
 from google.genai import types
 
 app = FastAPI(title="HealthyEye API")
 
-# Enable CORS for all origins (allows Vercel frontend to query Render backend)
+# Allow requests from Vercel frontend and local development environments
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,12 +15,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize Gemini Client using system environment variable GEMINI_API_KEY
+# Read API key from Render Environment Variables
+# Pass the NAME of the environment variable as a literal string
 api_key = os.getenv("GEMINI_API_KEY")
-if not api_key:
-    client = None
-else:
+if api_key:
     client = genai.Client(api_key=api_key)
+else:
+    client = None
 
 SYSTEM_PROMPT = """
 You are HealthyEye, an AI health assistant. 
@@ -37,29 +36,47 @@ Keep language simple and easy for everyday consumers to understand.
 """
 
 @app.get("/")
-def read_root():
-    return {"status": "ok", "message": "HealthyEye API is running"}
+def health_check():
+    return {
+        "status": "ok", 
+        "message": "HealthyEye API is running",
+        "api_key_configured": api_key is not None
+    }
 
 @app.post("/analyze-medicine")
 async def analyze_medicine(file: UploadFile = File(...)):
+    # 1. Check if GEMINI_API_KEY is available on Render
     if not client:
         raise HTTPException(
             status_code=500, 
-            detail="GEMINI_API_KEY environment variable is not configured on the server."
+            detail="GEMINI_API_KEY is missing in Render Environment Variables."
         )
 
     try:
-        # Read uploaded image bytes
-        contents = await file.read()
-        image = Image.open(io.BytesIO(contents))
+        # 2. Read raw image file bytes
+        file_bytes = await file.read()
 
-        # Call Gemini SDK
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=[SYSTEM_PROMPT, image]
+        # 3. Format image for Gemini using types.Part.from_bytes
+        image_part = types.Part.from_bytes(
+            data=file_bytes,
+            mime_type=file.content_type or "image/jpeg"
         )
 
-        return {"success": True, "analysis": response.text}
+        # 4. Generate analysis with gemini-2.5-flash
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=[SYSTEM_PROMPT, image_part]
+        )
+
+        return {
+            "success": True, 
+            "analysis": response.text
+        }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # Print error details directly to Render Logs console
+        print(f"Backend Exception: {str(e)}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"API Error: {str(e)}"
+        )
