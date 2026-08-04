@@ -29,40 +29,12 @@
             position: relative;
         }
 
-        /* Fullscreen 3D Background Canvas */
-        #bgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: none;
-        }
+        #bgCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
 
-        header { 
-            text-align: center; 
-            margin-bottom: 24px; 
-            z-index: 1; 
-        }
+        header { text-align: center; margin-bottom: 24px; z-index: 1; }
+        h1 { color: #52b788; margin-bottom: 6px; font-size: 2.5rem; font-weight: 700; letter-spacing: -0.5px; text-shadow: 0 0 20px rgba(82, 183, 136, 0.3); }
+        p.subtitle { color: #94a3b8; margin: 0; font-size: 0.95rem; max-width: 440px; }
 
-        h1 { 
-            color: #52b788; 
-            margin-bottom: 6px; 
-            font-size: 2.5rem; 
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            text-shadow: 0 0 20px rgba(82, 183, 136, 0.3);
-        }
-
-        p.subtitle { 
-            color: #94a3b8; 
-            margin: 0; 
-            font-size: 0.95rem; 
-            max-width: 440px; 
-        }
-
-        /* Glassmorphism Card Container */
         .card { 
             background: rgba(15, 28, 24, 0.75); 
             backdrop-filter: blur(20px);
@@ -78,58 +50,20 @@
         }
         
         .btn-group { display: flex; gap: 14px; margin-bottom: 16px; justify-content: center; }
-        .btn { 
-            flex: 1; 
-            padding: 14px 18px; 
-            border-radius: 12px; 
-            border: none; 
-            font-weight: 600; 
-            font-size: 0.95rem; 
-            cursor: pointer; 
-            transition: all 0.2s ease; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
-        }
+        .btn { flex: 1; padding: 14px 18px; border-radius: 12px; border: none; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .btn:active { transform: scale(0.97); }
 
-        .btn-primary { 
-            background: linear-gradient(135deg, #2d6a4f, #52b788); 
-            color: #ffffff; 
-            box-shadow: 0 4px 15px rgba(45, 106, 79, 0.4);
-        }
-        .btn-primary:hover { 
-            background: linear-gradient(135deg, #1b4332, #40916c);
-            box-shadow: 0 6px 20px rgba(82, 183, 136, 0.5);
-        }
-
-        .btn-secondary { 
-            background: rgba(255, 255, 255, 0.08); 
-            color: #cbd5e1; 
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-        .btn-secondary:hover { 
-            background: rgba(255, 255, 255, 0.15); 
-            color: #ffffff;
-        }
-
-        .btn-back {
-            background: rgba(82, 183, 136, 0.15);
-            color: #74c69d;
-            border: 1px solid rgba(82, 183, 136, 0.4);
-            margin-top: 16px;
-            width: 100%;
-            display: none;
-        }
-        .btn-back:hover {
-            background: rgba(82, 183, 136, 0.25);
-            color: #ffffff;
-        }
+        .btn-primary { background: linear-gradient(135deg, #2d6a4f, #52b788); color: #ffffff; box-shadow: 0 4px 15px rgba(45, 106, 79, 0.4); }
+        .btn-primary:hover { background: linear-gradient(135deg, #1b4332, #40916c); box-shadow: 0 6px 20px rgba(82, 183, 136, 0.5); }
+        .btn-secondary { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.15); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); color: #ffffff; }
+        .btn-back { background: rgba(82, 183, 136, 0.15); color: #74c69d; border: 1px solid rgba(82, 183, 136, 0.4); margin-top: 16px; width: 100%; display: none; }
+        .btn-back:hover { background: rgba(82, 183, 136, 0.25); color: #ffffff; }
+        .btn-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); margin-top: 16px; width: 100%; }
+        .btn-danger:hover { background: rgba(239, 68, 68, 0.25); }
 
         input[type="file"] { display: none; }
         
-        /* Cropper Container */
         .crop-container { display: none; margin-top: 15px; text-align: center; }
         .img-container { max-height: 280px; width: 100%; margin-bottom: 14px; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid rgba(82, 183, 136, 0.3); }
         #imageToCrop { max-width: 100%; display: block; }
@@ -139,33 +73,34 @@
         
         .status { margin-top: 16px; font-weight: 600; font-size: 0.95rem; color: #74c69d; }
         
-        /* Dark Theme Result Card */
-        .result { 
-            text-align: left; 
-            background: rgba(10, 20, 17, 0.85); 
-            border-left: 4px solid #52b788; 
-            border-radius: 8px; 
-            padding: 18px 22px; 
-            margin-top: 20px; 
-            font-size: 0.92rem; 
-            line-height: 1.6; 
-            color: #e2e8f0;
-            display: none; 
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
+        .result { text-align: left; background: rgba(10, 20, 17, 0.85); border-left: 4px solid #52b788; border-radius: 8px; padding: 18px 22px; margin-top: 20px; font-size: 0.92rem; line-height: 1.6; color: #e2e8f0; display: none; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
         .result h3 { color: #74c69d; margin-top: 16px; margin-bottom: 6px; font-size: 1.05rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; }
         .result h3:first-child { margin-top: 0; }
         .result ul { padding-left: 18px; margin: 6px 0; }
-        .result li { margin-bottom: 4px; color: #cbd5e1; }
-        .result p { margin: 6px 0; color: #cbd5e1; }
+        .result li, .result p { margin-bottom: 4px; color: #cbd5e1; }
         .result strong { color: #ffffff; font-weight: 600; }
         
         p.disclaimer { font-size: 0.78rem; color: #64748b; max-width: 460px; text-align: center; margin-top: 22px; z-index: 1; line-height: 1.4; }
+
+        /* History View Styles */
+        .history-link { display: inline-block; margin-top: 16px; color: #74c69d; text-decoration: underline; cursor: pointer; font-size: 0.9rem; }
+        #historyView { display: none; }
+        #historyView h2 { color: #52b788; margin-top: 0; font-size: 1.4rem; }
+        #historyList { max-height: 350px; overflow-y: auto; text-align: left; padding-right: 5px; }
+        #historyList::-webkit-scrollbar { width: 6px; }
+        #historyList::-webkit-scrollbar-thumb { background: rgba(82, 183, 136, 0.4); border-radius: 4px; }
+        
+        .history-item { background: rgba(255,255,255,0.05); border: 1px solid rgba(82,183,136,0.2); border-radius: 10px; padding: 10px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: background 0.2s; }
+        .history-item:hover { background: rgba(255,255,255,0.1); }
+        .history-thumb { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; border: 1px solid rgba(82,183,136,0.5); }
+        .history-details { flex: 1; overflow: hidden; }
+        .history-date { font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px; }
+        .history-snippet { font-size: 0.85rem; color: #e2e8f0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
     </style>
 </head>
 <body>
 
-    <!-- 3D Background Canvas -->
     <canvas id="bgCanvas"></canvas>
 
     <header>
@@ -174,32 +109,43 @@
     </header>
 
     <div class="card">
-        <!-- Action Buttons -->
-        <div class="btn-group" id="actionButtons">
-            <button class="btn btn-primary" onclick="triggerCamera()">Take Photo</button>
-            <button class="btn btn-secondary" onclick="triggerFilePicker()">Upload File</button>
-        </div>
-
-        <input type="file" id="cameraInput" accept="image/*" capture="environment">
-        <input type="file" id="fileInput" accept="image/*">
-
-        <!-- Cropping Section -->
-        <div class="crop-container" id="cropContainer">
-            <div class="img-container">
-                <img id="imageToCrop" alt="To Crop">
+        
+        <!-- MAIN SCAN VIEW -->
+        <div id="scanView">
+            <div class="btn-group" id="actionButtons">
+                <button class="btn btn-primary" onclick="triggerCamera()">Take Photo</button>
+                <button class="btn btn-secondary" onclick="triggerFilePicker()">Upload File</button>
             </div>
-            <button class="btn btn-primary" style="width:100%;" onclick="confirmCrop()">Crop & Analyze</button>
+
+            <input type="file" id="cameraInput" accept="image/*" capture="environment">
+            <input type="file" id="fileInput" accept="image/*">
+
+            <div class="crop-container" id="cropContainer">
+                <div class="img-container">
+                    <img id="imageToCrop" alt="To Crop">
+                </div>
+                <button class="btn btn-primary" style="width:100%;" onclick="confirmCrop()">Crop & Analyze</button>
+            </div>
+
+            <a class="history-link" id="viewHistoryBtn" onclick="showHistoryView()">View Past Scans</a>
         </div>
 
-        <!-- Preview Section -->
+        <!-- HISTORY BROWSER VIEW -->
+        <div id="historyView">
+            <h2>Scan History</h2>
+            <div id="historyList"></div>
+            <button class="btn btn-secondary" style="width: 100%; margin-top: 16px;" onclick="resetUI()">← Back to Scanner</button>
+            <button class="btn btn-danger" onclick="clearHistory()">Clear All History</button>
+        </div>
+
+        <!-- SHARED RESULTS DISPLAY -->
         <div class="preview-box" id="previewBox">
-            <img id="previewImg" class="preview-img" alt="Final Cropped Medicine">
+            <img id="previewImg" class="preview-img" alt="Cropped Medicine">
         </div>
 
         <div id="statusBox" class="status"></div>
         <div id="resultCard" class="result"></div>
         
-        <!-- Back Button After Result -->
         <button id="backBtn" class="btn btn-back" onclick="resetUI()">← Back to Scan</button>
     </div>
 
@@ -216,21 +162,13 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
         const geometry = new THREE.IcosahedronGeometry(0.75, 0);
-        const material = new THREE.MeshBasicMaterial({ 
-            color: 0x52b788, 
-            wireframe: true, 
-            transparent: true, 
-            opacity: 0.35 
-        });
+        const material = new THREE.MeshBasicMaterial({ color: 0x52b788, wireframe: true, transparent: true, opacity: 0.35 });
 
         const nodes = [];
         for (let i = 0; i < 22; i++) {
             const mesh = new THREE.Mesh(geometry, material);
-            mesh.position.x = (Math.random() - 0.5) * 16;
-            mesh.position.y = (Math.random() - 0.5) * 16;
-            mesh.position.z = (Math.random() - 0.5) * 16;
-            mesh.rotation.x = Math.random() * Math.PI;
-            mesh.rotation.y = Math.random() * Math.PI;
+            mesh.position.set((Math.random() - 0.5) * 16, (Math.random() - 0.5) * 16, (Math.random() - 0.5) * 16);
+            mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
             const scale = Math.random() * 0.7 + 0.3;
             mesh.scale.set(scale, scale, scale);
             scene.add(mesh);
@@ -238,7 +176,6 @@
         }
 
         camera.position.z = 8;
-
         let mouseX = 0, mouseY = 0;
         window.addEventListener('mousemove', (e) => {
             mouseX = (e.clientX / window.innerWidth - 0.5) * 0.4;
@@ -251,15 +188,12 @@
                 node.rotation.x += 0.002 + idx * 0.0001;
                 node.rotation.y += 0.003 + idx * 0.0001;
             });
-
             camera.position.x += (mouseX - camera.position.x) * 0.05;
             camera.position.y += (-mouseY - camera.position.y) * 0.05;
             camera.lookAt(scene.position);
-
             renderer.render(scene, camera);
         }
         animate();
-
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
@@ -269,6 +203,11 @@
         // --- APP LOGIC ---
         const API_BASE = "https://healthyeye-1.onrender.com";
 
+        const scanView = document.getElementById('scanView');
+        const historyView = document.getElementById('historyView');
+        const viewHistoryBtn = document.getElementById('viewHistoryBtn');
+        const actionButtons = document.getElementById('actionButtons');
+        
         const cameraInput = document.getElementById('cameraInput');
         const fileInput = document.getElementById('fileInput');
         const cropContainer = document.getElementById('cropContainer');
@@ -278,9 +217,9 @@
         const statusBox = document.getElementById('statusBox');
         const resultCard = document.getElementById('resultCard');
         const backBtn = document.getElementById('backBtn');
-        const actionButtons = document.getElementById('actionButtons');
 
         let cropper = null;
+        let currentThumbDataUrl = null;
 
         function triggerCamera() { cameraInput.click(); }
         function triggerFilePicker() { fileInput.click(); }
@@ -290,29 +229,26 @@
 
         function loadFileForCropping(file) {
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(event) {
                 imageToCrop.src = event.target.result;
                 actionButtons.style.display = 'none';
+                viewHistoryBtn.style.display = 'none';
                 cropContainer.style.display = 'block';
 
-                if (cropper) {
-                    cropper.destroy();
-                }
-                
-                cropper = new Cropper(imageToCrop, {
-                    aspectRatio: NaN,
-                    viewMode: 1,
-                    autoCropArea: 0.8,
-                });
+                if (cropper) cropper.destroy();
+                cropper = new Cropper(imageToCrop, { aspectRatio: NaN, viewMode: 1, autoCropArea: 0.8 });
             };
             reader.readAsDataURL(file);
         }
 
         function confirmCrop() {
             if (!cropper) return;
+            
+            // Get a small, compressed thumbnail to save in history later
+            currentThumbDataUrl = cropper.getCroppedCanvas({ width: 100, height: 100 }).toDataURL('image/jpeg', 0.5);
 
+            // Get high quality blob for the backend
             cropper.getCroppedCanvas({ maxWidth: 1200, maxHeight: 1200 }).toBlob((blob) => {
                 cropContainer.style.display = 'none';
                 cropper.destroy();
@@ -335,17 +271,16 @@
             formData.append('file', blob, 'medicine_crop.jpg');
 
             try {
-                const response = await fetch(`${API_BASE}/analyze-medicine`, {
-                    method: 'POST',
-                    body: formData
-                });
-
+                const response = await fetch(`${API_BASE}/analyze-medicine`, { method: 'POST', body: formData });
                 const data = await response.json();
 
                 if (response.ok && data.success) {
                     statusBox.textContent = '';
-                    resultCard.innerHTML = marked.parse(data.analysis);
+                    const parsedHtml = marked.parse(data.analysis);
+                    resultCard.innerHTML = parsedHtml;
                     resultCard.style.display = 'block';
+                    
+                    saveToHistory(currentThumbDataUrl, parsedHtml);
                 } else {
                     statusBox.style.color = '#ff6b6b';
                     statusBox.textContent = data.detail || 'Backend processing error occurred.';
@@ -353,22 +288,91 @@
             } catch (err) {
                 statusBox.style.color = '#ff6b6b';
                 statusBox.textContent = 'Network error: Failed to reach server.';
-                console.error(err);
             } finally {
                 backBtn.style.display = 'block';
+            }
+        }
+
+        // --- LOCAL STORAGE HISTORY LOGIC ---
+        function saveToHistory(thumbBase64, htmlResult) {
+            let history = JSON.parse(localStorage.getItem('healthyeye_history') || '[]');
+            
+            // Extract the first heading or bold text to use as the snippet title
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = htmlResult;
+            const heading = tempDiv.querySelector('h3, strong');
+            const titleSnippet = heading ? heading.innerText : "Medical Scan Result";
+
+            const newItem = {
+                date: new Date().toLocaleString(),
+                thumb: thumbBase64,
+                title: titleSnippet,
+                analysis: htmlResult
+            };
+            
+            history.unshift(newItem); 
+            if (history.length > 15) history.pop(); // Cap at 15 items to save space
+            localStorage.setItem('healthyeye_history', JSON.stringify(history));
+        }
+
+        function showHistoryView() {
+            scanView.style.display = 'none';
+            historyView.style.display = 'block';
+            
+            const historyList = document.getElementById('historyList');
+            const history = JSON.parse(localStorage.getItem('healthyeye_history') || '[]');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<p style="color:#94a3b8; font-size: 0.95rem; text-align:center;">No past scans found on this device.</p>';
+                return;
+            }
+
+            historyList.innerHTML = history.map((item, index) => `
+                <div class="history-item" onclick="loadHistoryItem(${index})">
+                    <img src="${item.thumb}" class="history-thumb">
+                    <div class="history-details">
+                        <div class="history-date">${item.date}</div>
+                        <div class="history-snippet">${item.title}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadHistoryItem(index) {
+            const history = JSON.parse(localStorage.getItem('healthyeye_history') || '[]');
+            const item = history[index];
+            if (!item) return;
+
+            historyView.style.display = 'none';
+            previewImg.src = item.thumb; 
+            previewBox.style.display = 'block';
+            resultCard.innerHTML = item.analysis;
+            resultCard.style.display = 'block';
+            backBtn.style.display = 'block';
+        }
+
+        function clearHistory() {
+            if(confirm("Are you sure you want to clear your local scan history?")) {
+                localStorage.removeItem('healthyeye_history');
+                showHistoryView(); // Refresh the list
             }
         }
 
         function resetUI() {
             cameraInput.value = '';
             fileInput.value = '';
+            scanView.style.display = 'block';
+            actionButtons.style.display = 'flex';
+            viewHistoryBtn.style.display = 'inline-block';
+            
+            historyView.style.display = 'none';
             cropContainer.style.display = 'none';
             previewBox.style.display = 'none';
-            actionButtons.style.display = 'flex';
             statusBox.textContent = '';
             resultCard.innerHTML = '';
             resultCard.style.display = 'none';
             backBtn.style.display = 'none';
+            
             if (cropper) {
                 cropper.destroy();
                 cropper = null;
