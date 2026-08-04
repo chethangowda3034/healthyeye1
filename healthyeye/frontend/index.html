@@ -29,12 +29,14 @@
             position: relative;
         }
 
+        /* Fullscreen 3D Background Canvas */
         #bgCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
 
         header { text-align: center; margin-bottom: 24px; z-index: 1; }
         h1 { color: #52b788; margin-bottom: 6px; font-size: 2.5rem; font-weight: 700; letter-spacing: -0.5px; text-shadow: 0 0 20px rgba(82, 183, 136, 0.3); }
         p.subtitle { color: #94a3b8; margin: 0; font-size: 0.95rem; max-width: 440px; }
 
+        /* Glassmorphism Card Container */
         .card { 
             background: rgba(15, 28, 24, 0.75); 
             backdrop-filter: blur(20px);
@@ -55,15 +57,19 @@
 
         .btn-primary { background: linear-gradient(135deg, #2d6a4f, #52b788); color: #ffffff; box-shadow: 0 4px 15px rgba(45, 106, 79, 0.4); }
         .btn-primary:hover { background: linear-gradient(135deg, #1b4332, #40916c); box-shadow: 0 6px 20px rgba(82, 183, 136, 0.5); }
+        
         .btn-secondary { background: rgba(255, 255, 255, 0.08); color: #cbd5e1; border: 1px solid rgba(255, 255, 255, 0.15); }
         .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); color: #ffffff; }
+        
         .btn-back { background: rgba(82, 183, 136, 0.15); color: #74c69d; border: 1px solid rgba(82, 183, 136, 0.4); margin-top: 16px; width: 100%; display: none; }
         .btn-back:hover { background: rgba(82, 183, 136, 0.25); color: #ffffff; }
+        
         .btn-danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); margin-top: 16px; width: 100%; }
         .btn-danger:hover { background: rgba(239, 68, 68, 0.25); }
 
         input[type="file"] { display: none; }
         
+        /* Cropper Container */
         .crop-container { display: none; margin-top: 15px; text-align: center; }
         .img-container { max-height: 280px; width: 100%; margin-bottom: 14px; background: #000; border-radius: 10px; overflow: hidden; border: 1px solid rgba(82, 183, 136, 0.3); }
         #imageToCrop { max-width: 100%; display: block; }
@@ -73,6 +79,7 @@
         
         .status { margin-top: 16px; font-weight: 600; font-size: 0.95rem; color: #74c69d; }
         
+        /* Result Card */
         .result { text-align: left; background: rgba(10, 20, 17, 0.85); border-left: 4px solid #52b788; border-radius: 8px; padding: 18px 22px; margin-top: 20px; font-size: 0.92rem; line-height: 1.6; color: #e2e8f0; display: none; box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
         .result h3 { color: #74c69d; margin-top: 16px; margin-bottom: 6px; font-size: 1.05rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 4px; }
         .result h3:first-child { margin-top: 0; }
@@ -96,7 +103,6 @@
         .history-details { flex: 1; overflow: hidden; }
         .history-date { font-size: 0.75rem; color: #94a3b8; margin-bottom: 4px; }
         .history-snippet { font-size: 0.85rem; color: #e2e8f0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
     </style>
 </head>
 <body>
@@ -120,16 +126,18 @@
             <input type="file" id="cameraInput" accept="image/*" capture="environment">
             <input type="file" id="fileInput" accept="image/*">
 
-            <!-- Cropping Section -->
-        <div class="crop-container" id="cropContainer">
-            <div class="img-container">
-                <img id="imageToCrop" alt="To Crop">
+            <div class="crop-container" id="cropContainer">
+                <div class="img-container">
+                    <img id="imageToCrop" alt="To Crop">
+                </div>
+                <!-- Flex group for Cancel and Crop -->
+                <div class="btn-group" style="margin-bottom: 0;">
+                    <button class="btn btn-secondary" style="flex: 1;" onclick="resetUI()">Cancel</button>
+                    <button class="btn btn-primary" style="flex: 2;" onclick="confirmCrop()">Crop & Analyze</button>
+                </div>
             </div>
-            <!-- Replaced single button with a flex group for Cancel and Crop -->
-            <div class="btn-group" style="margin-bottom: 0;">
-                <button class="btn btn-secondary" style="flex: 1;" onclick="resetUI()">Cancel</button>
-                <button class="btn btn-primary" style="flex: 2;" onclick="confirmCrop()">Crop & Analyze</button>
-            </div>
+
+            <a class="history-link" id="viewHistoryBtn" onclick="showHistoryView()">View Past Scans</a>
         </div>
 
         <!-- HISTORY BROWSER VIEW -->
@@ -247,10 +255,10 @@
         function confirmCrop() {
             if (!cropper) return;
             
-            // Get a small, compressed thumbnail to save in history later
+            // Get thumbnail to save in history
             currentThumbDataUrl = cropper.getCroppedCanvas({ width: 100, height: 100 }).toDataURL('image/jpeg', 0.5);
 
-            // Get high quality blob for the backend
+            // Get high quality blob for backend
             cropper.getCroppedCanvas({ maxWidth: 1200, maxHeight: 1200 }).toBlob((blob) => {
                 cropContainer.style.display = 'none';
                 cropper.destroy();
@@ -313,7 +321,7 @@
             };
             
             history.unshift(newItem); 
-            if (history.length > 15) history.pop(); // Cap at 15 items to save space
+            if (history.length > 15) history.pop(); // Cap at 15 items
             localStorage.setItem('healthyeye_history', JSON.stringify(history));
         }
 
@@ -356,7 +364,7 @@
         function clearHistory() {
             if(confirm("Are you sure you want to clear your local scan history?")) {
                 localStorage.removeItem('healthyeye_history');
-                showHistoryView(); // Refresh the list
+                showHistoryView();
             }
         }
 
