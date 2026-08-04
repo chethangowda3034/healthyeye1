@@ -6,7 +6,7 @@ from google.genai import types
 
 app = FastAPI(title="HealthyEye API")
 
-# Allow requests from Vercel frontend and local development environments
+# Enable CORS for all origins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,9 +15,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Read API key from Render Environment Variables
-# Pass the NAME of the environment variable as a literal string
+# Read API key securely from Render Environment Variables
 api_key = os.getenv("GEMINI_API_KEY")
+
 if api_key:
     client = genai.Client(api_key=api_key)
 else:
@@ -45,11 +45,11 @@ def health_check():
 
 @app.post("/analyze-medicine")
 async def analyze_medicine(file: UploadFile = File(...)):
-    # 1. Check if GEMINI_API_KEY is available on Render
+    # 1. Verify GEMINI_API_KEY presence
     if not client:
         raise HTTPException(
             status_code=500, 
-            detail="GEMINI_API_KEY is missing in Render Environment Variables."
+            detail="GEMINI_API_KEY environment variable is missing on Render."
         )
 
     try:
@@ -62,7 +62,7 @@ async def analyze_medicine(file: UploadFile = File(...)):
             mime_type=file.content_type or "image/jpeg"
         )
 
-        # 4. Generate analysis with gemini-2.5-flash
+        # 4. Generate analysis
         response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=[SYSTEM_PROMPT, image_part]
@@ -74,9 +74,8 @@ async def analyze_medicine(file: UploadFile = File(...)):
         }
 
     except Exception as e:
-        # Print error details directly to Render Logs console
-        print(f"Backend Exception: {str(e)}")
+        print(f"Backend Exception Error: {str(e)}")
         raise HTTPException(
             status_code=500, 
-            detail=f"API Error: {str(e)}"
+            detail=f"Gemini API Error: {str(e)}"
         )

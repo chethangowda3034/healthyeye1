@@ -14,7 +14,7 @@
         .upload-zone { border: 2px dashed #b7e4c7; border-radius: 8px; padding: 30px 15px; cursor: pointer; transition: background 0.2s ease; }
         .upload-zone:hover { background-color: #f0fdf4; }
         input[type="file"] { display: none; }
-        .preview-img { max-width: 100%; max-height: 220px; border-radius: 8px; margin-top: 15px; display: none; }
+        .preview-img { max-width: 100%; max-height: 220px; border-radius: 8px; margin-top: 15px; display: none; margin-left: auto; margin-right: auto; }
         .status { margin-top: 15px; font-weight: 500; font-size: 0.95rem; }
         .result { text-align: left; background: #f8fafc; border-left: 4px solid #2d6a4f; padding: 15px; border-radius: 4px; margin-top: 20px; font-size: 0.95rem; line-height: 1.5; white-space: pre-wrap; display: none; }
         p.disclaimer { font-size: 0.75rem; color: #718096; max-width: 440px; text-align: center; margin-top: 25px; }
@@ -59,7 +59,7 @@
             const file = e.target.files[0];
             if (!file) return;
 
-            // Show local preview
+            // Show preview
             previewImg.src = URL.createObjectURL(file);
             previewImg.style.display = 'block';
             uploadPrompt.style.display = 'none';
@@ -85,11 +85,12 @@
                     resultCard.style.display = 'block';
                 } else {
                     statusBox.style.color = '#e63946';
-                    statusBox.textContent = data.detail || 'Something went wrong — check backend logs.';
+                    // Display specific error detail returned from FastAPI backend
+                    statusBox.textContent = data.detail || 'Backend processing error occurred.';
                 }
             } catch (err) {
                 statusBox.style.color = '#e63946';
-                statusBox.textContent = 'Network error: Unable to reach backend server.';
+                statusBox.textContent = 'Network error: Failed to reach backend server.';
                 console.error(err);
             } finally {
                 resetLink.style.display = 'inline-block';
